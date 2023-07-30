@@ -22,6 +22,8 @@ const Pathfind = ()=>{
     const [startcol,setStartcol] = useState('');
     const [endrow,setEndrow] = useState('');
     const [endcol,setEndcol] = useState('');
+    const [randomClicked, setRandom]  = useState(false);
+    const [okClicked, setOk]  = useState(false);
     useEffect(()=>{
         flag = false;
         initialiseGrid();
@@ -39,6 +41,7 @@ const Pathfind = ()=>{
         setGrid(grid);
     }
     const createblock = () => {
+        
         blockednode = [];
         const grid = new Array(rows);
         flag = true;
@@ -60,6 +63,7 @@ const Pathfind = ()=>{
         setVisited(path.visitednodes);
         path_found = path.path_found;
         flag = false;
+        setRandom(true);
     };
 
     const createSpot = (grid)=>{
@@ -196,7 +200,7 @@ const Pathfind = ()=>{
             document.getElementById(`node-${endrow}-${endcol}`).className = "node node-end";
             position_created = true;
         }
-       
+       setOk(true);
     }
     return (
         <> 
@@ -254,8 +258,12 @@ const Pathfind = ()=>{
             {same_value && <p className="para">starting point is same as ending point. please reset it!!!!</p>}
             </div>
             <div className="Wrapper"> 
-                <button onClick={createblock} className="btn">create random block</button>
-                <button onClick={visualisePath} className="btn">Visulaise Path</button>
+                <button onClick={okClicked? createblock : null} className="btn" style={{
+                    color : okClicked? 'black':'grey'
+                }}>create random block</button>
+                <button onClick={randomClicked ? visualisePath : null} className="btn" style={{
+                    color : randomClicked? 'black':'grey'
+                }}>Visulaise Path</button>
                 <button onClick={clear_path} className="btn">Reset</button>
                 {gridwithNode}
             </div>
@@ -274,6 +282,7 @@ const Pathfind = ()=>{
                 <div className="nodee nodee-shortest"></div>
                 <h3 className="h3">shortest path node</h3>
             </div>
+            <div style={{height: '60px'}}></div>
         </>
     )
 }
